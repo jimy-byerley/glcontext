@@ -27,6 +27,9 @@ def default_backend():
     for known in PLATFORMS:
         if target.startswith(known):
             target = known
+	
+	if target == 'linux' and hasattr(sys, 'getandroidapilevel'):  # or 'ANDROID_BOOTLOGO' in os.environ
+		target = 'android'
 
     if target not in PLATFORMS:
         target = 'linux'
