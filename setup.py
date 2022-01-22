@@ -2,13 +2,16 @@ import platform
 import sys
 from setuptools import Extension, setup
 
-PLATFORMS = {'windows', 'linux', 'darwin'}
+PLATFORMS = {'windows', 'linux', 'darwin', 'android'}
 
 target = platform.system().lower()
 
 for known in PLATFORMS:
     if target.startswith(known):
         target = known
+        
+if target == 'linux' and hasattr(sys, 'getandroidapilevel'):  # or 'ANDROID_BOOTLOGO' in os.environ
+	target = 'android'
 
 if target not in PLATFORMS:
     target = 'linux'
@@ -55,6 +58,7 @@ ext_modules = {
     'windows': [wgl],
     'linux': [x11, egl],
     'darwin': [darwin],
+    'android': [egl],
 }
 
 setup(
